@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: qwaszx123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: blogDb
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  spring:
+    container_name: spring
+    build:
+      dockerfile: Dockerfile
+    image: blog-image:latest
+    ports:
+      - 8080:8080
+    networks:
+      - backend-network
+volumes:
+  pgdata:
+
+networks:
+  backend-network:
+    driver: bridge
