@@ -3,9 +3,9 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: qwaszx123
-      POSTGRES_USER: postgres
-      POSTGRES_DB: blogDb
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - 5432:5432
     volumes:
@@ -18,6 +18,11 @@ services:
     build:
       dockerfile: Dockerfile
     image: blog-image:latest
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
     ports:
       - 8080:8080
     networks:
