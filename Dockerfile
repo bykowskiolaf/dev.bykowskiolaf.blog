@@ -6,8 +6,10 @@ COPY pom.xml .
 RUN ./mvnw dependency:go-offline
 COPY src src
 RUN ./mvnw package -Dmaven.test.skip=true
-RUN mv target/*.jar springboot-flash-cards-docker.jar
+# Rename the JAR file to blog-backend.jar
+RUN mv target/*.jar blog-backend.jar
 
 FROM openjdk:21-jdk
-COPY --from=buildstage target/*.jar blog-server.jar
-ENTRYPOINT ["java","-jar","/blog-server.jar"]
+# Copy the renamed JAR file to the final image
+COPY --from=buildstage /app/blog-backend.jar blog-backend.jar
+ENTRYPOINT ["java","-jar","/blog-backend.jar"]
