@@ -1,6 +1,7 @@
-package dev.bykowskiolaf.blog.model;
+package dev.bykowskiolaf.blog.models.post;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Table(name = "posts")
 @Entity
@@ -19,14 +21,23 @@ public class Post {
 
     @Id
     @GeneratedValue
+    @NotNull
+    @Column(unique = true)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
+    @Column(unique = true)
     private String uuid;
 
-    @Column(nullable = false)
+    @NotNull
     private String title;
 
     @CreationTimestamp
+    @NotNull
     private Instant creationDate;
+
+    public Post(String title) {
+        this.title = title;
+        this.uuid = String.valueOf(UUID.randomUUID());
+    }
 }

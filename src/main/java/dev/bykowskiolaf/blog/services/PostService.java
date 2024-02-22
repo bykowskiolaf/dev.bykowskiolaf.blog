@@ -1,7 +1,7 @@
-package dev.bykowskiolaf.blog.service;
+package dev.bykowskiolaf.blog.services;
 
-import dev.bykowskiolaf.blog.model.Post;
-import dev.bykowskiolaf.blog.repository.PostRepository;
+import dev.bykowskiolaf.blog.models.post.Post;
+import dev.bykowskiolaf.blog.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

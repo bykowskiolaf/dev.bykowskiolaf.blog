@@ -1,13 +1,10 @@
-package dev.bykowskiolaf.blog.controller;
+package dev.bykowskiolaf.blog.controllers;
 
-import dev.bykowskiolaf.blog.model.Post;
-import dev.bykowskiolaf.blog.service.PostService;
+import dev.bykowskiolaf.blog.models.post.Post;
+import dev.bykowskiolaf.blog.services.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,8 +24,10 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> savePost(Post post) {
-        postService.savePost(post);
+    public ResponseEntity<ResponseStatus> savePost(
+            @RequestHeader("title") String title
+    ) {
+        postService.savePost(new Post(title));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

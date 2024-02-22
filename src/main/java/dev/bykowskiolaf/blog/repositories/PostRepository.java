@@ -1,7 +1,7 @@
-package dev.bykowskiolaf.blog.repository;
+package dev.bykowskiolaf.blog.repositories;
 
 
-import dev.bykowskiolaf.blog.model.Post;
+import dev.bykowskiolaf.blog.models.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
