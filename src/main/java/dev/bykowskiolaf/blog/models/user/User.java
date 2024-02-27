@@ -1,5 +1,6 @@
 package dev.bykowskiolaf.blog.models.user;
 
+import dev.bykowskiolaf.blog.models.role.Role;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -22,10 +23,10 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User  implements UserDetails {
+public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     @Column(unique = true)
     private Long id;
@@ -51,11 +52,16 @@ public class User  implements UserDetails {
     @ManyToMany
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private Collection<> roles;
+                joinColumns = @JoinColumn(
+                        name = "user_id",
+                        referencedColumnName = "id"
+                ),
+                inverseJoinColumns = @JoinColumn(
+                        name = "role_id",
+                        referencedColumnName = "id"
+            )
+    )
+    private Collection<Role> roles;
 
     @NotNull
     @Size(min = 1, max = 255)
@@ -66,8 +72,30 @@ public class User  implements UserDetails {
     @CreationTimestamp
     private Instant creationDate;
 
+    @Nullable
+    private boolean enabled;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return ;
+        return roles;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return enabled;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

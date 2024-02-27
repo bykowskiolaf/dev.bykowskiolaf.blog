@@ -1,79 +1,38 @@
-package dev.bykowskiolaf.blog.config;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-
-@EnableWebSecurity
-@Configuration
-public class WebSecurityConfig {
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                //.csrf((csrf) -> csrf
-                //				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                //			)
-                .csrf(AbstractHttpConfigurer::disable);
-        return http.build();
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
-                );
-
-        return http.build();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder);
-
-        return new ProviderManager(authenticationProvider);
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(userDetails);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-}
+//package dev.bykowskiolaf.blog.config;
+//
+//import dev.bykowskiolaf.blog.models.role.Role;
+//import dev.bykowskiolaf.blog.models.role.Roles;
+//import dev.bykowskiolaf.blog.models.user.User;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.provisioning.JdbcUserDetailsManager;
+//import org.springframework.security.provisioning.UserDetailsManager;
+//
+//import javax.sql.DataSource;
+//import java.util.Collection;
+//
+//@Configuration
+//@EnableWebSecurity
+//public class WebSecurityConfig {
+//
+//    @Bean
+//    UserDetailsManager users(DataSource dataSource) {
+//        UserDetails user = User.builder()
+//                .username("user")
+//                .password("{bcrypt}$2a$10$AiyMWI4UBLozgXq6itzyVuxrtofjcPzn/WS3fOrcqgzdax9jB7Io.")
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password("{bcrypt}$2a$10$AiyMWI4UBLozgXq6itzyVuxrtofjcPzn/WS3fOrcqgzdax9jB7Io.")
+//                .roles("USER", "ADMIN")
+//                .build();
+//        JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
+//        users.createUser(user);
+//        users.createUser(admin);
+//        return users;
+//    }
+//
+//}

@@ -1,8 +1,8 @@
 package dev.bykowskiolaf.blog.services;
 
 import dev.bykowskiolaf.blog.repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserDetailsServiceImplementation implements UserDetailsService {
-    private final UserRepository userRepository;
+public class UserService implements UserDetailsService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 }

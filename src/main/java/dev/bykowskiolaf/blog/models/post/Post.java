@@ -33,7 +33,7 @@ public class Post {
     private String title;
 
     @CreationTimestamp
-    @NotNull
+    @Column(nullable = false, updatable = false)
     private Instant creationDate;
 
     public Post(String title) {
