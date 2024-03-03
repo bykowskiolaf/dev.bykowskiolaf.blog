@@ -20,6 +20,6 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd ~/Projects/dev.bykowskiolaf.blog
+            cd ~/Services/Personal/dev.bykowskiolaf.blog
             git pull --rebase
             docker compose up --build -d
