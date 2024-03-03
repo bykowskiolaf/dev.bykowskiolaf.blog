@@ -13,20 +13,21 @@ services:
     networks:
       - backend-network
 
-  spring:
-    container_name: spring
-    build:
-      dockerfile: Dockerfile
-    image: blog-image:latest
-    restart: always
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - 8080:8080
-    networks:
-      - backend-network
+#  spring:
+#    container_name: spring
+#    build:
+#      dockerfile: Dockerfile
+#    image: blog-image:latest
+#    restart: always
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+#      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+#      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - backend-network
+
 volumes:
   pgdata:
 

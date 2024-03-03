@@ -26,4 +26,14 @@ public class PostController {
         return postService.savePost(postRequest);
     }
 
+    @DeleteMapping("/{uuid}")
+//    @ResponseStatus(value = HttpStatus.NO_CONTENT) TODO: Fix this
+    public void deletePost(@PathVariable String uuid) {
+        postService.deletePost(uuid);
+    }
+
+    @PutMapping("/{uuid}")
+    public Post updatePost(@RequestBody PostRequest postRequest, @PathVariable String uuid) {
+        return postService.updatePost(postRequest, uuid);
+    }
 }
