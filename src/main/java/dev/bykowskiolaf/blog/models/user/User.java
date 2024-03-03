@@ -1,83 +1,71 @@
 package dev.bykowskiolaf.blog.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.bykowskiolaf.blog.models.role.Role;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.UUID;
 
 @Table(name = "users")
 @Entity
-@Builder
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    @Column(unique = true)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, updatable = false)
+    private UUID uuid;
 
-    @NotNull
-    @Column(unique = true)
-    private String uuid;
-
-    @NotNull
+    @NonNull
     @Size(min = 3, max = 255)
     @Email
     @Column(unique = true)
     private String email;
 
-    @NotNull
+    @NonNull
     @Size(min = 3, max = 127)
     private String username;
 
-    @NotNull
+    @NonNull
     @Size(min = 1, max = 255)
     private String firstName;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-                joinColumns = @JoinColumn(
-                        name = "user_id",
-                        referencedColumnName = "id"
-                ),
-                inverseJoinColumns = @JoinColumn(
-                        name = "role_id",
-                        referencedColumnName = "id"
-            )
-    )
-    private Collection<Role> roles;
-
-    @NotNull
+    @NonNull
     @Size(min = 1, max = 255)
     private String lastName;
 
+    @NonNull
+    @Size(min = 8, max = 255)
+    @JsonIgnore
     private String password;
 
     @CreationTimestamp
     private Instant creationDate;
 
-    @Nullable
-    private boolean enabled;
+    private boolean enabled = true;
 
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return role.getAuthorities();
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
